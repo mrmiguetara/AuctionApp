@@ -10,14 +10,17 @@
 html, body {
     margin: 0px;
     padding: 0px;
-    height: 100%;
+    height: 100vh;
 }
 .app-body {
     background-color: rgba(243,249,254,255);
+    overflow: hidden;
+    max-height: 100vh;
 }
 
 .uk-container {
-    margin:0 !important;
+    /* width: 100%; */
+    max-width: none;
     padding-top: 50px;
 }
 .uk-navbar-container {
@@ -47,7 +50,7 @@ html, body {
     height: 15px;
     width: 15px;
     background-color: rgba(208,201,214,255);
-    border-radius: 1px;
+    border-radius: 5px;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -60,7 +63,7 @@ html, body {
     content: "\f04d";
     font-family: "FontAwesome";
     color: rgba(208,201,214,255);
-    border-radius: 1px;
+    border-radius: 5px;
     
     height: 15px;
     width: 15px;
@@ -84,7 +87,13 @@ html, body {
     align-items: center;
     width: 250px;
 }
-
+.product-list {
+    padding-left: 100px;
+    overflow: auto;
+    max-height: 80vh;
+    /* max-height: 100vh; */
+    
+}
 .product {
     width: 350px;
     height: 350px;
@@ -110,12 +119,30 @@ html, body {
 }
 
 .product-button .uk-button {
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: rgba(208,201,214,255);
     color: white !important;
     font-weight: bold;
     text-transform: none !important;
     padding: 5px;
     text-align: center;
-    width: 100px;
+    width: 125px;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: rgb(209, 209, 209); 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(63,51,86,255); 
+    border-radius: 10px;
+  }
+  

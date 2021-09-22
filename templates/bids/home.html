@@ -33,8 +33,9 @@
             <label class="checkbox"><input type="checkbox"> E</label>
         </div>
     </div>
-    <div class="uk-width-3-4">
-        <div uk-grid>
+    <div class="uk-width-3-4 product-list">
+        <div class="uk-child-width-1-3 uk-grid-medium" uk-grid>
+            {% for item in '2222222222' %}
             <div>
                 <div class="uk-card uk-card-default product">
                     <div class="uk-card-media-top product-image">
@@ -55,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            {%endfor%}
         </div>
     </div>
 </div>
