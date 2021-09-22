@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.shortcuts import render
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home/', lambda request: render(request, 'bids/home.html', {'username': request.user.username}), name='home')
 ]

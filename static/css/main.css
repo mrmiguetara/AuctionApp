@@ -1,0 +1,121 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    color: rgba(26,5,29,255) !important;
+}
+/*
+.img {
+     rgba(63,51,86,255);
+}
+*/
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+.app-body {
+    background-color: rgba(243,249,254,255);
+}
+
+.uk-container {
+    margin:0 !important;
+    padding-top: 50px;
+}
+.uk-navbar-container {
+    padding: 20px 40px;
+}
+
+.logo {
+    font-size: 30px !important;
+    font-weight: bolder !important;
+}
+
+.user-avatar-nav {
+    width: 50px !important;
+}
+
+.user-info-nav p {
+    margin: auto;
+    padding-right: 10px;
+}
+.checkbox input {
+    position: relative;
+}
+
+.checkbox input::before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: rgba(208,201,214,255);
+    border-radius: 1px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.checkbox input:checked:after{
+    position: absolute;
+    background-color: white;
+    text-align: center;
+    content: "\f04d";
+    font-family: "FontAwesome";
+    color: rgba(208,201,214,255);
+    border-radius: 1px;
+    
+    height: 15px;
+    width: 15px;
+    border: 1px solid rgba(208,201,214,255);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.select-button  {
+    border: none !important;
+    border-radius: 5px !important;
+    background-color: rgba(236,233,241,255) !important;
+    display: flex;
+    transition-property: color,background-color,border-color;
+    flex-direction: row;
+    align-content: center;
+    padding: 0 10px 0 20px;
+    /* flex-wrap: nowrap; */
+    justify-content: space-between;
+    align-items: center;
+    width: 250px;
+}
+
+.product {
+    width: 350px;
+    height: 350px;
+    border-radius: 10px;
+    background-color: rgba(236,233,241,255);
+}
+
+.product-image {
+    height: 250px;
+    display: flex !important;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.uk-card-body {
+    padding: 10px 30px;
+}
+
+.product-button {
+    padding: 0;
+}
+
+.product-button .uk-button {
+    border-radius: 5px;
+    background-color: rgba(208,201,214,255);
+    color: white !important;
+    font-weight: bold;
+    text-transform: none !important;
+    padding: 5px;
+    text-align: center;
+    width: 100px;
+}

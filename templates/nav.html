@@ -1,0 +1,21 @@
+{% load static %}
+<nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+
+    <div class="uk-navbar-left">
+
+        <ul class="uk-navbar-nav">
+            <a class="logo" href="{% url 'home' %}">logo</a>
+        </ul>
+
+    </div>
+
+    <div class="uk-navbar-right">
+
+        <ul class="uk-navbar-nav user-info-nav">
+            <p>{{username}}</p>
+            <img class="user-avatar-nav" src="{% static 'images/user.png' %}" alt="">
+        </ul>
+
+    </div>
+
+</nav>
