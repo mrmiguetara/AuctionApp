@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+{%load static %}
+<title>Settings</title>
+{% endblock %}
+
+{% block container %}
+<h4 class="subtitle">settings</h4>
+<h1 class="title">Configure the Auto-bidding</h1>
+<p id="error-label"></p>
+<div class="settings-form">
+    <h2>Maximum bid amount</h2>
+    <p>This maximum amount will be split between all items where we have activated auto-bidding</p>
+    <p>Be mindful of the concurrency issues with auto-bidding!</p>
+    <div class="uk-margin">
+        <div class="uk-inline">
+            <span class="uk-form-icon">$</span>
+            <input id="total_reserved" class="uk-input" type="number" value="{{setting.total_reserved}}">
+        </div>
+    </div>
+    
+    <h2>Bid Alert Notification</h2>
+    <p>Get the notification about your reserved bids</p>
+    <div class="uk-margin">
+        <div class="uk-inline">
+            <span class="uk-form-icon uk-form-icon-flip">%</span>
+            <input id="alert_percent" class="uk-input" type="number" value="{{setting.alert_percent}}">
+        </div>
+    </div>
+</div>
+
+<button id="save-settings" class="uk-button uk-button-primary uk-margin-top" onclick="saveSettings()">
+    <a>Save changes</a>
+</button>
+
+{% endblock %}
+
+{% block js%}
+{% csrf_token %}
+
+<script>
+    function saveSettings() {
+        
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        var total_reserved =  parseInt(JSON.parse(document.getElementById('total_reserved').value));
+        var alert_percent =  parseInt(JSON.parse(document.getElementById('alert_percent').value));
+        
+        if (Number.isNaN(total_reserved)){
+            total_reserved = 0
+        }
+        if (Number.isNaN(alert_percent)) {
+            alert_percent = 0
+        }
+        if (alert_percent > 100 || alert_percent < 1) {
+            const errors = document.getElementById('error-label').innerText = 'Not valid percent value. Must be between 1 and 100.'
+        }
+        else {
+            axios.post(`http://localhost:8000/settings/`,
+            {
+                'alert_percent': alert_percent,
+                'total_reserved': total_reserved
+            },
+            {
+                headers: {'X-CSRFToken': csrftoken}
+            }).then( (resp) => {
+                console.log(resp)
+                if (resp.data.status == 1){
+                    window.location = 'http://localhost:8000/home'
+                }
+            })
+        }
+    }
+</script>
+{%endblock%}

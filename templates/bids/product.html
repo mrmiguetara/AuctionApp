@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+{%load static %}
+<title>{{product.name}}</title>
+{% endblock %}
+
+{% block container %}
+{% load smooth_timedelta %}
+
+<div class="uk-width-expand" uk-grid>
+    <div class="uk-width-2-3">
+        <img src="{{product.image.url}}" alt="">
+    </div>
+    <div class="uk-width-1-3">
+        <div class="product-detail">
+            <h1>Product no. {{product.id}}</h1>
+            <p>Minimum bid: ${{product.minimum_bid}}</p>
+            <h3>Details</h3>
+            <p>{{product.details}}</p>
+            <div uk-grid>
+                <div class="uk-width-1-2">
+                    <h4>Last bid made</h4>
+                    {% if bid %}
+                    <div>$ {{bid.value}}</div>
+                    {% else %}
+                    <div>No bid placed yet!</div>
+                    {% endif %}
+                </div>
+                <div class="uk-width-1-2">
+                    <h4>Available until</h4>
+                    <div>{{product.remaining_time|smooth_timedelta}}</div>
+                </div>
+            </div>
+        </div>
+        <button id="bid-button" class="uk-button uk-button-primary uk-margin-top" uk-toggle="target: #modal-bid">
+            <a>Place a bid</a>
+        </button>
+        <label class="checkbox uk-margin-top"><input type="checkbox"> Activate the <a href="{% url 'settings'  %}">auto-bidding</a> </label>
+    </div>
+</div>
+<!-- This is the modal -->
+<div id="modal-bid" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Place a bid!</h2>
+        <!-- <label class="uk-form-label" for="form-stacked-text">Bid value</label> -->
+        <div id="modal-error"></div>
+        <input class="uk-input" id="bid-value" type="number" placeholder="Bid value">
+        <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            <button class="uk-button uk-button-primary" type="button" onclick="send_bid()">Save</button>
+        </p>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+{{ bid.value|json_script:"bid_value" }}
+{{ product.id|json_script:"product_id" }}
+{{ product.minimum_bid|json_script:"minimum_bid"}}
+{% csrf_token %}
+<script>
+    function send_bid() {
+        
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        var lastBidValue =  parseInt(JSON.parse(document.getElementById('bid_value').textContent));
+        const minimumBidValue =  parseInt(JSON.parse(document.getElementById('minimum_bid').textContent));
+        const productId =  parseInt(JSON.parse(document.getElementById('product_id').textContent));
+        var bid = parseInt(document.getElementById('bid-value').value) ?? 0
+        console.log({bid})
+        if (Number.isNaN(lastBidValue)){
+            lastBidValue = 0
+        }
+        if (Number.isNaN(bid)) {
+            bid = 0
+        }
+        console.log({lastBidValue, minimumBidValue, bid})
+        if (bid <= lastBidValue || bid <= minimumBidValue) {
+            const bigger = lastBidValue > minimumBidValue ? lastBidValue : minimumBidValue;
+            const errors = document.getElementById('modal-error').innerText = 'Not valid bid amount. Must be an amount bigger than $' + bigger
+        }
+        else {
+            axios.post(`http://localhost:8000/products/${productId}`,
+            {
+                bid_amount: bid,
+                product_id: productId
+            },
+            {
+                headers: {'X-CSRFToken': csrftoken}
+            }).then( (resp) => {
+                console.log(resp)
+                if (resp.data.status == 1){
+                    window.location = 'http://localhost:8000/home'
+                }
+            })
+        }
+    }
+
+</script>
+
+{%endblock%}
