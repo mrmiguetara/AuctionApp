@@ -55,16 +55,20 @@ class ProductView(BaseView, DetailView):
         )
 
         settings = Setting.objects.filter(auto_bid_products=product).exclude(user=request.user)
+        print(settings.values())
         for setting in settings:
-            biggest_bid = Bid.objects.filter(product=product).order_by('value').first()
-            last_user_bid = Bid.objects.filter(product=product, user=setting.user).last()
-            diff = biggest_bid.value - last_user_bid.value
+            biggest_bid = Bid.objects.filter(product=product).order_by('value').last()
+            print(biggest_bid.value)
+            previous_bid = Bid.objects.filter(product=product, user=setting.user).order_by('updated_at').last()
+            last_user_bid_value = float(previous_bid.value) if previous_bid else 0
+            diff = float(biggest_bid.value) - last_user_bid_value
             goal = float(diff) + 1.0
+            print(diff, goal)
             if goal > setting.total_reserved:
                 # Not enough funds
                 continue
 
-            bid_value = float(biggest_bid.value) + goal
+            bid_value = last_user_bid_value + goal
             Bid.objects.create(
                 user=setting.user,
                 product=product,
