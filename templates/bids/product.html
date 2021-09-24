@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "bids/base.html" %}
 
 {% block head_content %}
 {%load static %}
@@ -36,7 +36,7 @@
         <button id="bid-button" class="uk-button uk-button-primary uk-margin-top" uk-toggle="target: #modal-bid">
             <a>Place a bid</a>
         </button>
-        <label class="checkbox uk-margin-top"><input type="checkbox"> Activate the <a href="{% url 'settings'  %}">auto-bidding</a> </label>
+        <label class="checkbox uk-margin-top"><input id="auto-bidding-checkbox" type="checkbox" {% if auto_bid %} checked {%endif%}> Activate the <a href="{% url 'settings'  %}">auto-bidding</a> </label>
     </div>
 </div>
 <!-- This is the modal -->

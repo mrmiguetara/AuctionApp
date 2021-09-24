@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+<div id="app">
+
+    <div class="uk-container">
+        {% block container %}
+        {% if error %}
+        {% endif%}
+        <div class="login-container">
+            <div class="login-form-container">
+                <p style="color: red !important;">{{ error }}</p>
+                <form id="login" class="uk-form-stacked" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-stacked-text">Username</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" name="username" type="text" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-stacked-text">Password</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" name="password" type="password" placeholder="*******">
+                        </div>
+                    </div>
+                
+                    <button id="login-button" class="uk-button uk-button-primary uk-margin-top" type="submit">
+                        <a>Login</a>
+                    </button>
+                    
+                </form>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>

@@ -19,11 +19,15 @@ from django.urls import path
 from django.shortcuts import render
 from django.contrib.staticfiles.urls import static
 from . import settings
+
 from bids.views import HomeView, ProductView, SettingView
+
+from generics.views import login_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', HomeView.as_view(), name='home'),
     path('products/<int:product_id>', ProductView.as_view(), name='product'),
-    # path('products/<int:product_id>/bid', post_bid, name='bid'),
-    path('settings/', SettingView.as_view(), name='settings')
+    path('settings/', SettingView.as_view(), name='settings'),
+    path('login/', login_view, name='login')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

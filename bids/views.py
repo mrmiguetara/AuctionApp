@@ -1,6 +1,8 @@
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View, DetailView, ListView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -9,7 +11,7 @@ from bids.models import Product, Category, Bid, Setting
 # Create your views here.
 
 
-class BaseView(View):
+class BaseView(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['username'] = self.request.user.username
@@ -36,6 +38,8 @@ class ProductView(BaseView, DetailView):
         context = super().get_context_data(**kwargs)
         # context['products'] = Product.objects.all()
         context['bid'] = Bid.objects.filter(product=context['product']).last()
+        setting = Setting.objects.get(user=self.request.user)
+        context['auto_bid'] = setting.auto_bid_products.filter(pk=context['product'].pk)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -49,6 +53,25 @@ class ProductView(BaseView, DetailView):
             product=product,
             value=bid_value
         )
+
+        settings = Setting.objects.filter(auto_bid_products=product).exclude(user=request.user)
+        for setting in settings:
+            biggest_bid = Bid.objects.filter(product=product).order_by('value').first()
+            last_user_bid = Bid.objects.filter(product=product, user=setting.user).last()
+            diff = biggest_bid.value - last_user_bid.value
+            goal = float(diff) + 1.0
+            if goal > setting.total_reserved:
+                # Not enough funds
+                continue
+
+            bid_value = float(biggest_bid.value) + goal
+            Bid.objects.create(
+                user=setting.user,
+                product=product,
+                value=bid_value
+            )
+            setting.total_reserved = float(setting.total_reserved ) - goal
+            setting.save()
 
         response = {'status': 1, 'message': ("Ok")}
         return JsonResponse(response, safe=False)

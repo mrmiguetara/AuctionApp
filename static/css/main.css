@@ -267,3 +267,22 @@ button a {
 #save-settings {
     width: 400px;
 }
+
+#login_form {
+    
+}
+#login .uk-input {
+    border-radius: 10px;
+    background-color: #d0c9d66b;
+}
+
+.login-container {
+    height: inherit;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+}

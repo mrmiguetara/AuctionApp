@@ -31,6 +31,7 @@ class Product(BaseModel):
 
 
 
+
 class Bid(BaseModel):
     value = models.DecimalField(max_digits=12, decimal_places=0, default=0)
 
