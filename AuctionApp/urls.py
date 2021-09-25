@@ -22,12 +22,13 @@ from . import settings
 
 from bids.views import HomeView, ProductView, SettingView
 
-from generics.views import login_view
+from generics.views import login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', HomeView.as_view(), name='home'),
     path('products/<int:product_id>', ProductView.as_view(), name='product'),
     path('settings/', SettingView.as_view(), name='settings'),
-    path('login/', login_view, name='login')
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

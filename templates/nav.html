@@ -12,7 +12,8 @@
     <div class="uk-navbar-right">
 
         <ul class="uk-navbar-nav user-info-nav">
-            <p>{{username}}</p>
+            <p>Hi, {{username}}</p>
+            <a href="{% url 'logout' %}">logout</a>
             <img class="user-avatar-nav" src="{% static 'images/user.png' %}" alt="">
         </ul>
 

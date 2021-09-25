@@ -66,6 +66,8 @@
         var lastBidValue =  parseInt(JSON.parse(document.getElementById('bid_value').textContent));
         const minimumBidValue =  parseInt(JSON.parse(document.getElementById('minimum_bid').textContent));
         const productId =  parseInt(JSON.parse(document.getElementById('product_id').textContent));
+
+        const auto_bid = document.getElementById('auto-bidding-checkbox').checked
         var bid = parseInt(document.getElementById('bid-value').value) ?? 0
         console.log({bid})
         if (Number.isNaN(lastBidValue)){
@@ -83,7 +85,8 @@
             axios.post(`http://localhost:8000/products/${productId}`,
             {
                 bid_amount: bid,
-                product_id: productId
+                product_id: productId,
+                set_auto_bid: auto_bid
             },
             {
                 headers: {'X-CSRFToken': csrftoken}

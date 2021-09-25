@@ -47,6 +47,13 @@ class ProductView(BaseView, DetailView):
         product = Product.objects.get(pk=data.get('product_id'))
         bid_value = data.get('bid_amount')
         # print(data, product, bid_value)
+        auto_bid = data.get('set_auto_bid')
+        print(auto_bid)
+
+        if auto_bid:
+            setting = self.request.user.settings
+            setting.auto_bid_products.add(product)
+            setting.save()
 
         Bid.objects.create(
             user=request.user,

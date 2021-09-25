@@ -42,7 +42,7 @@ class Bid(BaseModel):
 
 class Setting(BaseModel):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='settings')
-    alert_percent = models.DecimalField(max_digits=3, decimal_places=0)
-    total_reserved = models.DecimalField(max_digits=12, decimal_places=2)
+    alert_percent = models.DecimalField(max_digits=3, decimal_places=0, default=0)
+    total_reserved = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     auto_bid_products = models.ManyToManyField(Product, related_name='settings')

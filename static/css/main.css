@@ -36,7 +36,7 @@ html, body {
     width: 50px !important;
 }
 
-.user-info-nav p {
+.user-info-nav p, .user-info-nav a {
     margin: auto;
     padding-right: 10px;
 }
