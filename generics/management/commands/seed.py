@@ -17,8 +17,8 @@ class Command(BaseCommand):
 
         self.stdout.write('Creating settings')
 
-        Setting.objects.create(user=user_1)
-        Setting.objects.create(user=user_2)
+        Setting.objects.create(user=user_1, alert_percent=90, total_reserved=1000)
+        Setting.objects.create(user=user_2, alert_percent=90, total_reserved=1000)
 
         self.stdout.write('Creating Products and categories')
 

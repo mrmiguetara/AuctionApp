@@ -45,11 +45,16 @@
         <h2 class="uk-modal-title">Place a bid!</h2>
         <!-- <label class="uk-form-label" for="form-stacked-text">Bid value</label> -->
         <div id="modal-error"></div>
-        <input class="uk-input" id="bid-value" type="number" placeholder="Bid value">
-        <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-            <button class="uk-button uk-button-primary" type="button" onclick="send_bid()">Save</button>
-        </p>
+        <form action="{% url 'product' product.id %}" method="POST" onsubmit="return send_bid()">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" id="set_auto_bid" name="set_auto_bid">
+            <input class="uk-input" id="bid-value" name="bid_value" type="number" placeholder="Bid value">
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <button class="uk-button uk-button-primary" type="submit" >Save</button>
+            </p>
+        </form>
     </div>
 </div>
 {% endblock %}
@@ -68,6 +73,7 @@
         const productId =  parseInt(JSON.parse(document.getElementById('product_id').textContent));
 
         const auto_bid = document.getElementById('auto-bidding-checkbox').checked
+        document.getElementById('set_auto_bid').value = auto_bid
         var bid = parseInt(document.getElementById('bid-value').value) ?? 0
         console.log({bid})
         if (Number.isNaN(lastBidValue)){
@@ -80,23 +86,24 @@
         if (bid <= lastBidValue || bid <= minimumBidValue) {
             const bigger = lastBidValue > minimumBidValue ? lastBidValue : minimumBidValue;
             const errors = document.getElementById('modal-error').innerText = 'Not valid bid amount. Must be an amount bigger than $' + bigger
+            return false
         }
-        else {
-            axios.post(`http://localhost:8000/products/${productId}`,
-            {
-                bid_amount: bid,
-                product_id: productId,
-                set_auto_bid: auto_bid
-            },
-            {
-                headers: {'X-CSRFToken': csrftoken}
-            }).then( (resp) => {
-                console.log(resp)
-                if (resp.data.status == 1){
-                    window.location = 'http://localhost:8000/home'
-                }
-            })
-        }
+        // else {
+        //     axios.post(`http://localhost:8000/products/${productId}`,
+        //     {
+        //         bid_amount: bid,
+        //         product_id: productId,
+        //         set_auto_bid: auto_bid
+        //     },
+        //     {
+        //         headers: {'X-CSRFToken': csrftoken}
+        //     }).then( (resp) => {
+        //         console.log(resp)
+        //         if (resp.data.status == 1){
+        //             window.location = 'http://localhost:8000/home'
+        //         }
+        //     })
+        // }
     }
 
 </script>
